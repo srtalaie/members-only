@@ -4,6 +4,9 @@ const express = require("express")
 const path = require("path")
 const cookieParser = require("cookie-parser")
 const logger = require("morgan")
+const session = require("express-session")
+const mongoose = require("mongoose")
+const passport = require("passport")
 
 const indexRouter = require("./routes/index")
 const usersRouter = require("./routes/users")
@@ -55,6 +58,18 @@ app.use(
 	})
 )
 
+// Add passport and session middleware
+app.use(
+	session({
+		secret: process.env.SECRET,
+		resave: false,
+		saveUninitialized: true,
+	})
+)
+app.use(passport.session())
+app.use(express.urlencoded({ extended: false }))
+
+// Routes
 app.use("/", indexRouter)
 app.use("/users", usersRouter)
 
