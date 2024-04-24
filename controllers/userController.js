@@ -110,7 +110,12 @@ exports.sign_up_page_post = [
 		if (existingUsername || existingEmailAddress) {
 			res.render("sign_up_form", {
 				title: "Sign Up",
-				user: user,
+				user: {
+					first_name: user.first_name,
+					last_name: user.last_name,
+					username: user.username,
+					email: user.email,
+				},
 				errors: [
 					{
 						msg: "This Username or Email is already in use",
@@ -122,7 +127,12 @@ exports.sign_up_page_post = [
 			// There are errors. Render form again with sanitized values/errors messages.
 			res.render("sign_up_form", {
 				title: "Sign Up",
-				user: user,
+				user: {
+					first_name: user.first_name,
+					last_name: user.last_name,
+					username: user.username,
+					email: user.email,
+				},
 				errors: errors.array(),
 			})
 			return
