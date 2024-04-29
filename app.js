@@ -8,6 +8,7 @@ const session = require("express-session")
 const passport = require("passport")
 const compression = require("compression")
 const helmet = require("helmet")
+const flash = require("connect-flash")
 
 const indexRouter = require("./routes/index")
 const usersRouter = require("./routes/users")
@@ -58,6 +59,8 @@ app.use(
 		},
 	})
 )
+
+app.use(flash())
 
 // Add passport and session middleware
 app.use(

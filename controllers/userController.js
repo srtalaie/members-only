@@ -14,10 +14,14 @@ passport.use(
 		try {
 			const user = await User.findOne({ username: username })
 			if (!user) {
-				return done(null, false, { message: "Incorrect username" })
+				return done(null, false, {
+					message: "Incorrect username and/or password",
+				})
 			}
 			if (!bcrypt.compare(password, user.passwordHash)) {
-				return done(null, false, { message: "Incorrect password" })
+				return done(null, false, {
+					message: "Incorrect username and/or password",
+				})
 			}
 			return done(null, user)
 		} catch (error) {
@@ -149,6 +153,7 @@ exports.sign_up_page_post = [
 exports.sign_in_page_get = asyncHandler(async (req, res, next) => {
 	res.render("sign_in_form", {
 		title: "Sign In",
+		messages: req.flash("error"),
 	})
 })
 
@@ -190,7 +195,9 @@ exports.sign_in_page_post = [
 		} else {
 			passport.authenticate("local", {
 				successRedirect: "/",
-				failureRedirect: "/user/login",
+				failureMessage: true,
+				failureFlash: true,
+				failureRedirect: "/user/sign-in",
 			})(req, res, next)
 		}
 	}),
