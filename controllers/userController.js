@@ -140,7 +140,58 @@ exports.sign_up_page_post = [
 			// Data is valid, save author
 			await user.save()
 			// Redirect to login page
-			res.redirect("/")
+			res.redirect("/user/sign-in")
+		}
+	}),
+]
+
+// Display User sign in page GET
+exports.sign_in_page_get = asyncHandler(async (req, res, next) => {
+	res.render("sign_in_form", {
+		title: "Sign In",
+	})
+})
+
+// Handle User sign in POST
+exports.sign_in_page_post = [
+	// Validate & Sanitize user input
+	body("username")
+		.trim()
+		.isLength({ min: 3 })
+		.escape()
+		.withMessage("Must provide a username."),
+	body("password")
+		.trim()
+		.escape()
+		.isStrongPassword({
+			minLength: 8,
+			minLowercase: 1,
+			minUppercase: 1,
+			minNumbers: 1,
+			minSymbols: 1,
+		})
+		.withMessage(
+			"Password must be at least 8 characters long, contain an upper and lower case character, and contain at least 1 special character and 1 number"
+		),
+
+	// Process request after sanitation and validation
+	asyncHandler(async (req, res, next) => {
+		// Extract errors from above validation
+		const errors = validationResult(req)
+
+		if (!errors.isEmpty()) {
+			// There are errors. Render form again with sanitized values/errors messages.
+			res.render("sign_in_form", {
+				title: "Sign In",
+				username: req.body.username,
+				errors: errors.array(),
+			})
+			return
+		} else {
+			passport.authenticate("local", {
+				successRedirect: "/",
+				failureRedirect: "/user/login",
+			})(req, res, next)
 		}
 	}),
 ]

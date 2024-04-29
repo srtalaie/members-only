@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
-    "devstart": "nodemon ./bin/www",
+    "devstart": "cross-env NODE_ENV=development nodemon ./bin/www",
     "serverstart": "SET DEBUG=members-only:* & cross-env NODE_ENV=development npm run devstart"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.0"
   }
 }
