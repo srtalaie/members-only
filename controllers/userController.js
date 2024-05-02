@@ -108,8 +108,8 @@ exports.sign_up_page_post = [
 
 		// Check to see if email or username is already in use or if there any additional errors
 		const [existingUsername, existingEmailAddress] = await Promise.all([
-			User.findOne({ username: req.body.username }),
-			User.findOne({ email: req.body.email }),
+			User.findOne({ username: req.body.username }).exec(),
+			User.findOne({ email: req.body.email }).exec(),
 		])
 		if (existingUsername || existingEmailAddress) {
 			res.render("sign_up_form", {
@@ -202,3 +202,15 @@ exports.sign_in_page_post = [
 		}
 	}),
 ]
+
+// User's Messages GET
+exports.all_users_messages_get = asyncHandler(async (req, res, next) => {
+	const messages = await User.findById(req.params.id, "messages")
+		.populate("messages")
+		.exec()
+	console.log(messages)
+	res.render("message_board", {
+		title: "Your Messages",
+		messages: messages.messages,
+	})
+})

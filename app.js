@@ -12,6 +12,7 @@ const flash = require("connect-flash")
 
 const indexRouter = require("./routes/index")
 const usersRouter = require("./routes/users")
+const messagesRouter = require("./routes/messages")
 
 let app = express()
 
@@ -19,7 +20,7 @@ let app = express()
 const RateLimit = require("express-rate-limit")
 const limiter = RateLimit({
 	windowMs: 1 * 60 * 1000, // 1 minute
-	max: 20,
+	max: 40,
 })
 // Apply rate limiter to all requests
 app.use(limiter)
@@ -76,6 +77,7 @@ app.use(express.urlencoded({ extended: false }))
 // Routes
 app.use("/", indexRouter)
 app.use("/user", usersRouter)
+app.use("/message", messagesRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -14,4 +14,6 @@ router.get("/sign-in", userController.sign_in_page_get)
 // POST user sign in form
 router.post("/sign-in", userController.sign_in_page_post)
 
+router.get("/:id", userController.all_users_messages_get)
+
 module.exports = router

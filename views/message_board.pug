@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+
+  if messages.length 
+    ul 
+      each message in messages
+        li
+          h5 Title: #{message.title}
+          p Message: #{message.text}
+          p #{message.time_stamp}
+
+          if message.user.username
+            p Author: #{message.user.username}
+  else 
+    p You currently have no messages

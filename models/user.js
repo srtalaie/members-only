@@ -23,4 +23,9 @@ const UserSchema = new Schema({
 	messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
 })
 
+// Virtual for users's url
+UserSchema.virtual("url").get(function () {
+	return `/user/${this._id}`
+})
+
 module.exports = mongoose.model("User", UserSchema)
