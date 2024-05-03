@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1= title
+
+  h5 Title: #{message.title}
+  p Message: #{message.text}
+  p #{message.time_stamp}
+
+  p Do you really want to delete this Message?
+
+    form(method='POST')
+      div.form-group
+        input#id.form-control(type='hidden', name='messageid', value=message._id )
+
+      button.btn.btn-primary(type='submit') Delete

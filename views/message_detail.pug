@@ -8,7 +8,10 @@ block content
   p #{message.time_stamp}
 
   if author_id === signed_in_user
-        p
-          a(href=message.url+'/delete') Delete category
-        p
-          a(href=message.url+'/update') Update category
+    p
+      a(href=message.url+'/delete') Delete Message
+    p
+      a(href=message.url+'/update') Update Message
+
+  if error_message 
+    p #{error_message}

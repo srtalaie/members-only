@@ -95,3 +95,28 @@ exports.message_delete_get = asyncHandler(async (req, res, next) => {
 		message: message,
 	})
 })
+
+// POST Message delete
+exports.message_delete_post = asyncHandler(async (req, res, next) => {
+	const message = await Message.findById(req.params.id).populate("user").exec()
+
+	if (message === null) {
+		// No results, redirect to home
+		res.redirect("/")
+	}
+
+	const authorId = message.user._id.toString()
+	const signedInUserId = req.user.id
+
+	if (authorId !== signedInUserId) {
+		res.render("message_detail", {
+			title: "Message Detail",
+			message: message,
+			error_message: "You are not authorized to delete this message.",
+		})
+		return
+	} else {
+		await Message.findByIdAndDelete(req.params.id).exec()
+		res.redirect("/")
+	}
+})
