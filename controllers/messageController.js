@@ -11,7 +11,7 @@ exports.latest_messages_get = asyncHandler(async (req, res, next) => {
 		.limit(10)
 		.populate("user")
 		.exec()
-	console.log("=========", messages)
+
 	res.render("message_board", {
 		title: "Message Board",
 		messages: messages,
@@ -65,3 +65,33 @@ exports.message_create_post = [
 		}
 	}),
 ]
+
+// GET Message detail page
+exports.message_detail_get = asyncHandler(async (req, res, next) => {
+	const message = await Message.findById(req.params.id).populate("user").exec()
+
+	const authorId = message.user._id.toString()
+	const signedInUserId = req.user.id
+
+	res.render("message_detail", {
+		title: "Message Detail",
+		message: message,
+		author_id: authorId,
+		signed_in_user: signedInUserId,
+	})
+})
+
+// GET Message Delete
+exports.message_delete_get = asyncHandler(async (req, res, next) => {
+	const message = await Message.findById(req.params.id).populate("user").exec()
+
+	if (message === null) {
+		// No results, redirect to home
+		res.redirect("/")
+	}
+
+	res.render("message_delete", {
+		title: "Delete Message",
+		message: message,
+	})
+})

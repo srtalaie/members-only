@@ -13,5 +13,9 @@ block content
 
           if message.user.username
             p Author: #{message.user.username}
+          
+          p 
+            a(href=message.url) Detail
+
   else 
     p You currently have no messages

@@ -205,12 +205,17 @@ exports.sign_in_page_post = [
 
 // User's Messages GET
 exports.all_users_messages_get = asyncHandler(async (req, res, next) => {
-	const messages = await User.findById(req.params.id, "messages")
+	const user = await User.findById(req.params.id, "messages")
 		.populate("messages")
 		.exec()
-	console.log(messages)
-	res.render("message_board", {
-		title: "Your Messages",
-		messages: messages.messages,
-	})
+
+	if (user._id.toString() === req.user.id) {
+		res.render("message_board", {
+			title: "Your Messages",
+			messages: user.messages,
+			user_id: user._id.toString(),
+			signed_in_user: req.user.id,
+		})
+		return
+	}
 })

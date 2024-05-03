@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  h5 Title: #{message.title}
+  p Message: #{message.text}
+  p #{message.time_stamp}
+
+  if author_id === signed_in_user
+        p
+          a(href=message.url+'/delete') Delete category
+        p
+          a(href=message.url+'/update') Update category
