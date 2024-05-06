@@ -1,10 +1,11 @@
 extends layout
+include ../partials/mixins
 
 block content
-  h1= title
-
   #user
     if user
+      +navbar-mixin
+
       h4 Welcome #{user.username}
       
     else 

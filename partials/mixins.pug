@@ -1,0 +1,14 @@
+mixin navbar-mixin
+  div(class='container-fluid')
+  div(class='row')
+    nav(class="navbar navbar-default")
+      div(class='container-fluid')
+        ul(class="nav navbar-nav mr-auto flex-row")
+          li(class="nav-item ml-1")
+            a(href="/") Home
+          li(class="nav-item ml-1") 
+            a(href="/message/message-board") Latest Messages
+          li(class="nav-item ml-1") 
+            a(href="/message/create") Create a Message
+          li(class="nav-item ml-1") 
+            a(class="text-danger" href="/logout") Logout

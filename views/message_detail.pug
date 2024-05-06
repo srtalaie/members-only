@@ -1,6 +1,8 @@
 extends layout
+include ../partials/mixins
 
 block content
+  +navbar-mixin
   h1= title
 
   h5 Title: #{message.title}
