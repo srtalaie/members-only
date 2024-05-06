@@ -30,12 +30,12 @@ exports.message_create_post = [
 		.trim()
 		.isLength({ min: 1 })
 		.escape()
-		.withMessage("Must provide a title for you message."),
+		.withMessage("Must provide a title for your message."),
 	body("text")
 		.trim()
 		.escape()
 		.isLength({ min: 1 })
-		.withMessage("You message must contain text."),
+		.withMessage("Your message must contain text."),
 
 	// Process request after sanitation and validation
 	asyncHandler(async (req, res, next) => {
@@ -117,6 +117,82 @@ exports.message_delete_post = asyncHandler(async (req, res, next) => {
 		return
 	} else {
 		await Message.findByIdAndDelete(req.params.id).exec()
+		const currentUser = await User.findById(signedInUserId).exec()
+		const updated_message_array = currentUser.messages.filter(
+			(message) => message.toString() !== req.params.id
+		)
+		currentUser.messages = updated_message_array
+		await currentUser.save()
 		res.redirect("/")
 	}
 })
+
+// GET update message
+exports.message_update_get = asyncHandler(async (req, res, next) => {
+	const message = await Message.findById(req.params.id).populate("user").exec()
+
+	if (message === null) {
+		// No results, redirect to home
+		res.redirect("/")
+	}
+
+	res.render("message_form", {
+		title: "Update Message",
+		message: message,
+	})
+})
+
+// POST update message
+exports.message_update_post = [
+	// Validate and Sanitize user input
+	body("title")
+		.trim()
+		.isLength({ min: 1 })
+		.escape()
+		.withMessage("Must provide a title for your message."),
+	body("text")
+		.trim()
+		.escape()
+		.isLength({ min: 1 })
+		.withMessage("Your message must contain text."),
+
+	// Process request after validation and sanitization
+	asyncHandler(async (req, res, next) => {
+		// Extract errors from validation/sanitization
+		const errors = validationResult(req)
+		const original_message = await Message.findById(req.params.id)
+			.populate("user")
+			.exec()
+
+		// Update message with validated data
+		const updated_message = new Message({
+			title: req.body.title,
+			text: req.body.text,
+			_id: req.params.id,
+		})
+
+		const authorId = original_message.user._id.toString()
+		const signedInUserId = req.user.id
+
+		if (authorId !== signedInUserId) {
+			res.render("message_detail", {
+				title: "Message Detail",
+				message: message,
+				error_message: "You are not authorized to delete this message.",
+			})
+			return
+		}
+
+		if (!errors.isEmpty()) {
+			res.render("message_form", {
+				title: "Update Message",
+				message: updated_message,
+				errors: errors.array(),
+			})
+			return
+		} else {
+			await Message.findByIdAndUpdate(req.params.id, updated_message)
+			res.redirect(updated_message.url)
+		}
+	}),
+]

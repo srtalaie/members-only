@@ -20,4 +20,10 @@ router.get("/:id/delete", messageController.message_delete_get)
 // POST message delete
 router.post("/:id/delete", messageController.message_delete_post)
 
+// GET message update
+router.get("/:id/update", messageController.message_update_get)
+
+// POST message update
+router.post("/:id/update", messageController.message_update_post)
+
 module.exports = router
