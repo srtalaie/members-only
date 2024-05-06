@@ -5,9 +5,8 @@ block content
   #user
     if user
       +navbar-mixin
-
       h4 Welcome #{user.username}
-      
+      a(href=user.url) Your messages
     else 
       h4 Please Sign in 
       a(href="/user/sign-in") Sign in
