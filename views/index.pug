@@ -6,15 +6,7 @@ block content
   #user
     if user
       h4 Welcome #{user.username}
-        ul 
-          li 
-            a(href=user.url) Your Messages
-          li 
-            a(href="/message/message-board") Latest Messages
-          li 
-            a(href="/logout") Logout
-          li 
-            a(href="/message/create") Create a Message
+      
     else 
       h4 Please Sign in 
       a(href="/user/sign-in") Sign in
