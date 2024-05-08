@@ -10,3 +10,10 @@ ul {
 a {
   color: #00B7FF;
 }
+
+#message {
+  border-color: black;
+  border-style: groove;
+  border-width: 2px;
+  margin: 10px;
+}

@@ -5,19 +5,23 @@ block content
   +navbar-mixin
   h1= title
 
-  if messages.length 
-    ul 
-      each message in messages
-        li
-          h5 Title: #{message.title}
-          p Message: #{message.text}
-          p #{message.time_stamp}
+  div(class='container-fluid')
+      if messages.length
+        div(class='row') 
+          ul(class='row')
+            each message in messages
+              div(class='col' id='message')
+                li
+                  h5 Title: #{message.title}
+                  p Message: #{message.text}
+                  p #{message.time_stamp}
 
-          if message.user.username
-            p Author: #{message.user.username}
-          
-          p 
-            a(href=message.url) Detail
+                  if message.user.username
+                    p Author: #{message.user.username}
+                  
+                  p 
+                    a(href=message.url) Detail
 
-  else 
-    p You currently have no messages
+      else 
+        div 
+          p You currently have no messages
